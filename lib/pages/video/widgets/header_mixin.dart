@@ -325,13 +325,12 @@ mixin HeaderMixin<T extends StatefulWidget> on State<T> {
                     ),
                     child: SliderTheme(
                       data: sliderTheme,
-                      child: Slider(
-                        min: 0,
-                        max: 1,
-                        value: plPlayerController.danmakuOpacity.value,
-                        divisions: 100,
-                        label: '${(plPlayerController.danmakuOpacity * 100).toStringAsFixed(1)}%',
-                        onChanged: updateOpacity,
+                        child: Slider(
+                          min: 0,
+                          max: 1,
+                          value: plPlayerController.danmakuOpacity.value,
+                          label: '${(plPlayerController.danmakuOpacity * 100).toStringAsFixed(1)}%',
+                          onChanged: updateOpacity,
                       ),
                     ),
                   ),
@@ -408,14 +407,13 @@ mixin HeaderMixin<T extends StatefulWidget> on State<T> {
                     ),
                     child: SliderTheme(
                       data: sliderTheme,
-                      child: Slider(
-                        min: 0.5,
-                        max: 2.5,
-                        value: DanmakuOptions.danmakuFontScale,
-                        divisions: 200,
-                        label:
-                            '${(DanmakuOptions.danmakuFontScale * 100).toStringAsFixed(1)}%',
-                        onChanged: updateFontSize,
+                        child: Slider(
+                          min: 0.5,
+                          max: 2.5,
+                          value: DanmakuOptions.danmakuFontScale,
+                          label:
+                              '${(DanmakuOptions.danmakuFontScale * 100).toStringAsFixed(1)}%',
+                          onChanged: updateFontSize,
                       ),
                     ),
                   ),
@@ -437,14 +435,13 @@ mixin HeaderMixin<T extends StatefulWidget> on State<T> {
                     ),
                     child: SliderTheme(
                       data: sliderTheme,
-                      child: Slider(
-                        min: 0.5,
-                        max: 2.5,
-                        value: DanmakuOptions.danmakuFontScaleFS,
-                        divisions: 200,
-                        label:
-                            '${(DanmakuOptions.danmakuFontScaleFS * 100).toStringAsFixed(1)}%',
-                        onChanged: updateFontSizeFS,
+                        child: Slider(
+                          min: 0.5,
+                          max: 2.5,
+                          value: DanmakuOptions.danmakuFontScaleFS,
+                          label:
+                              '${(DanmakuOptions.danmakuFontScaleFS * 100).toStringAsFixed(1)}%',
+                          onChanged: updateFontSizeFS,
                       ),
                     ),
                   ),
