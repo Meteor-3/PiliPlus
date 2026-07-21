@@ -9,6 +9,9 @@ on:
             - ready_for_review
         paths-ignore:
             - "**.md"
+    push:
+        branches:
+            - feat/live-page-theme
     workflow_dispatch:
         inputs:
             build_android:
@@ -49,7 +52,7 @@ on:
 
 jobs:
     android:
-        if: ${{ (github.event_name == 'pull_request' && github.repository == 'bggRGjQaUbCoE/PiliPlus') || github.event.inputs.build_android == 'true' }}
+        if: ${{ (github.event_name == 'pull_request' && github.repository == 'bggRGjQaUbCoE/PiliPlus') || github.event.inputs.build_android == 'true' || github.event_name == 'push' }}
         name: Release Android
         runs-on: ubuntu-latest
         permissions: write-all
@@ -159,7 +162,7 @@ jobs:
             tag: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || '' }}
 
     win_x64:
-        if: ${{ (github.event_name == 'pull_request' && github.repository == 'bggRGjQaUbCoE/PiliPlus') || github.event.inputs.build_win_x64 == 'true' }}
+        if: ${{ (github.event_name == 'pull_request' && github.repository == 'bggRGjQaUbCoE/PiliPlus') || github.event.inputs.build_win_x64 == 'true' || github.event_name == 'push' }}
         uses: ./.github/workflows/win_x64.yml
         permissions: write-all
         with:
