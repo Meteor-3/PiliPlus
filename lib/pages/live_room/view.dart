@@ -235,10 +235,10 @@ class _LiveRoomPageState extends State<LiveRoomPage>
         child: child,
       );
     }
-    return Theme(
-      data: ThemeUtils.darkTheme,
-      child: child,
-    );
+    if (Pref.darkLivePage) {
+      child = Theme(data: ThemeUtils.darkTheme, child: child);
+    }
+    return child;
   }
 
   Widget videoPlayerPanel(

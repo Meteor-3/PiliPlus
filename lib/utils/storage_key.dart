@@ -121,6 +121,7 @@ abstract final class SettingBoxKey {
       enableShrinkVideoSize = 'enableShrinkVideoSize',
       showDynActionBar = 'showDynActionBar',
       darkVideoPage = 'darkVideoPage',
+      darkLivePage = 'darkLivePage',
       enableSlideVolumeBrightness = 'enableSlideVolumeBrightness',
       enableSlideFS = 'enableSlideFS',
       retryCount = 'retryCount',

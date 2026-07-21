@@ -148,6 +148,12 @@ List<SettingsModel> get styleSettings => [
     setKey: SettingBoxKey.darkVideoPage,
     defaultVal: false,
   ),
+  const SwitchModel(
+    title: '直播播放页使用深色主题',
+    leading: Icon(Icons.dark_mode_outlined),
+    setKey: SettingBoxKey.darkLivePage,
+    defaultVal: false,
+  ),
   SwitchModel(
     title: '动态页启用瀑布流',
     subtitle: '关闭会显示为单列',

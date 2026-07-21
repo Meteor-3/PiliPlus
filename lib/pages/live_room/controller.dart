@@ -682,23 +682,24 @@ class LiveRoomController extends GetxController {
       PublishRoute(
         barrierColor: Colors.transparent,
         pageBuilder: (context, animation, secondaryAnimation) {
-          return Theme(
-            data: ThemeUtils.darkTheme,
-            child: LiveSendDmPanel(
-              fromEmote: fromEmote,
-              liveRoomController: this,
-              items: savedDanmaku,
-              autofocus: !fromEmote,
-              onSave: (msg) {
-                if (msg.isEmpty) {
-                  savedDanmaku?.clear();
-                  savedDanmaku = null;
-                } else {
-                  savedDanmaku = msg.toList();
-                }
-              },
-            ),
+          Widget panel = LiveSendDmPanel(
+            fromEmote: fromEmote,
+            liveRoomController: this,
+            items: savedDanmaku,
+            autofocus: !fromEmote,
+            onSave: (msg) {
+              if (msg.isEmpty) {
+                savedDanmaku?.clear();
+                savedDanmaku = null;
+              } else {
+                savedDanmaku = msg.toList();
+              }
+            },
           );
+          if (Pref.darkLivePage) {
+            panel = Theme(data: ThemeUtils.darkTheme, child: panel);
+          }
+          return panel;
         },
         transitionDuration: fromEmote
             ? const Duration(milliseconds: 400)

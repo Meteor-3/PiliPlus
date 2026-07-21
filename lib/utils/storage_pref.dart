@@ -563,6 +563,9 @@ abstract final class Pref {
   static bool get darkVideoPage =>
       _setting.get(SettingBoxKey.darkVideoPage, defaultValue: false);
 
+  static bool get darkLivePage =>
+      _setting.get(SettingBoxKey.darkLivePage, defaultValue: false);
+
   static bool get enableSlideVolumeBrightness => _setting.get(
     SettingBoxKey.enableSlideVolumeBrightness,
     defaultValue: true,
