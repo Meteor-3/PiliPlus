@@ -9,9 +9,6 @@ on:
             - ready_for_review
         paths-ignore:
             - "**.md"
-    push:
-        branches:
-            - fix/opacity-label-format
     workflow_dispatch:
         inputs:
             build_android:
@@ -162,7 +159,7 @@ jobs:
             tag: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || '' }}
 
     win_x64:
-        if: ${{ (github.event_name == 'pull_request' && github.repository == 'bggRGjQaUbCoE/PiliPlus') || github.event.inputs.build_win_x64 == 'true' || github.event_name == 'push' }}
+        if: ${{ (github.event_name == 'pull_request' && github.repository == 'bggRGjQaUbCoE/PiliPlus') || github.event.inputs.build_win_x64 == 'true' }}
         uses: ./.github/workflows/win_x64.yml
         permissions: write-all
         with:
