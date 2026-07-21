@@ -108,7 +108,7 @@ mixin HeaderMixin<T extends StatefulWidget> on State<T> {
         }
 
         void updateFontSizeFS(double val) {
-          DanmakuOptions.danmakuFontScaleFS = val;
+          DanmakuOptions.danmakuFontScaleFS = (val * 100).round() / 100;
           setState(() {});
           if (isFullScreen) {
             setOptions();
@@ -116,7 +116,7 @@ mixin HeaderMixin<T extends StatefulWidget> on State<T> {
         }
 
         void updateFontSize(double val) {
-          DanmakuOptions.danmakuFontScale = val;
+          DanmakuOptions.danmakuFontScale = (val * 100).round() / 100;
           setState(() {});
           if (!isFullScreen) {
             setOptions();
@@ -136,7 +136,7 @@ mixin HeaderMixin<T extends StatefulWidget> on State<T> {
         }
 
         void updateOpacity(double val) {
-          plPlayerController.danmakuOpacity.value = val;
+          plPlayerController.danmakuOpacity.value = (val * 100).round() / 100;
           setState(() {});
         }
 
