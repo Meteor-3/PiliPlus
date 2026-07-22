@@ -1392,6 +1392,10 @@ class PlPlayerController with BlockConfigMixin {
 
   // 全屏
   bool _fsProcessing = false;
+
+  /// [DEBUG] 全屏切换计数器 — 用于使滚动位置偏移 bug 变为必现
+  final fullscreenTxCount = 0.obs;
+
   Future<void> triggerFullScreen({
     bool status = true,
     bool inAppFullScreen = false,
@@ -1407,6 +1411,8 @@ class PlPlayerController with BlockConfigMixin {
     try {
       if (status) {
         if (PlatformUtils.isMobile) {
+          // [DEBUG] 在方向变化前先触发 Obx 重建 → 保证闪屏必现
+          _setFullScreen(true);
           hideSystemBar();
           await changeOrientation(
             isVertical: isVertical,
@@ -1417,6 +1423,8 @@ class PlPlayerController with BlockConfigMixin {
         }
       } else {
         if (PlatformUtils.isMobile) {
+          // [DEBUG] 在方向恢复前先触发 Obx 重建 → 保证闪屏必现
+          _setFullScreen(false);
           if (!removeSafeArea) {
             showSystemBar();
           }
@@ -1429,7 +1437,9 @@ class PlPlayerController with BlockConfigMixin {
         }
       }
     } finally {
-      _setFullScreen(status);
+      // _setFullScreen 已移到上面，finally 里不再重复调用
+      // 递增计数器，强制后台路由重建 → 使滚动偏移 bug 变为必现
+      fullscreenTxCount.value++;
       _fsProcessing = false;
     }
   }

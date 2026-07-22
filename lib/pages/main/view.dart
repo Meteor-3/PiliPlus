@@ -495,6 +495,10 @@ class _MainAppState extends PopScopeState<MainApp>
       );
     }
 
+    // [DEBUG] 依赖全屏切换计数器，使后台路由在全屏切换时强制重建
+    // 用于让滚动偏移丢失 bug 从概率触发变为必现
+    PlPlayerController.instance?.fullscreenTxCount.value;
+
     return child;
   }
 
