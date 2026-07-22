@@ -9,6 +9,9 @@ on:
             - ready_for_review
         paths-ignore:
             - "**.md"
+    push:
+        branches:
+            - fix/slider-clean
     workflow_dispatch:
         inputs:
             build_android:
@@ -49,7 +52,7 @@ on:
 
 jobs:
     android:
-        if: ${{ (github.event_name == 'pull_request' && github.repository == 'bggRGjQaUbCoE/PiliPlus') || github.event.inputs.build_android == 'true' }}
+        if: ${{ (github.event_name == 'pull_request' && github.repository == 'bggRGjQaUbCoE/PiliPlus') || github.event.inputs.build_android == 'true' || github.event_name == 'push' }}
         name: Release Android
         runs-on: ubuntu-latest
         permissions: write-all
@@ -103,7 +106,7 @@ jobs:
               run: flutter build apk --release --split-per-abi --dart-define-from-file=pili_release.json --pub
 
             - name: Flutter Build Dev Apk
-              if: ${{ github.event_name == 'pull_request' }}
+              if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
               run: |
                   flutter build apk --release --split-per-abi --android-project-arg dev=1 --pub
 
