@@ -521,15 +521,8 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
             controller: videoDetailController.scrollCtr,
             onlyOneScrollInBody: true,
             pinnedHeaderSliverHeightBuilder: () {
-              double pinnedHeight = this.isFullScreen || !isPortrait
-                  ? maxHeight - (isWindowMode && !isPortrait ? 0 : padding.top)
-                  : videoDetailController.isExpanding ||
-                        videoDetailController.isCollapsing
-                  ? videoDetailController.animHeight
-                  : videoDetailController.isCollapsing ||
-                        (plPlayerController?.playerStatus.isPlaying ?? false)
-                  ? videoDetailController.minVideoHeight
-                  : kToolbarHeight;
+              // [DEBUG] 配合隔离测试，固定 pinned 高度
+              double pinnedHeight = videoDetailController.videoHeight;
               if (videoDetailController.isExpanding &&
                   videoDetailController.animationController.value == 1) {
                 videoDetailController.isExpanding = false;
@@ -547,12 +540,10 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
               return pinnedHeight;
             },
             headerSliverBuilder: (context, innerBoxIsScrolled) {
-              final height = isFullScreen || !isPortrait
-                  ? maxHeight - (isWindowMode && !isPortrait ? 0 : padding.top)
-                  : videoDetailController.isExpanding ||
-                        videoDetailController.isCollapsing
-                  ? videoDetailController.animHeight
-                  : videoDetailController.videoHeight;
+              // [DEBUG] 隔离测试：固定视频高度不变，排除高度变化对旋转动画的干扰
+              // 如果此版本旋转动画正常 → 根因是视频高度变化
+              // 如果仍然异常 → 根因在别处
+              final height = videoDetailController.videoHeight;
               return [
                 VideoHeader(
                   minExtent: kToolbarHeight,
