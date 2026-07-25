@@ -1433,6 +1433,10 @@ class PlPlayerController with BlockConfigMixin {
         }
       }
     } finally {
+      // [DEBUG] 延迟执行 _setFullScreen，确保 Obx 重建落在旋转动画中段
+      // 原代码中 platform channel 返回时间不确定，导致重建有时落在旋转前、有时落在旋转中
+      // 固定延迟让重建永远落在旋转中 → 旋转动画异常 + 画面不完整 变为必现
+      await Future.delayed(const Duration(milliseconds: 250));
       _setFullScreen(status);
       // 递增计数器，强制后台路由重建 → 使滚动偏移 bug 变为必现
       fullscreenTxCount.value++;
