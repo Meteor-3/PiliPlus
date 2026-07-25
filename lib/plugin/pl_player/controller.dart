@@ -1411,8 +1411,6 @@ class PlPlayerController with BlockConfigMixin {
     try {
       if (status) {
         if (PlatformUtils.isMobile) {
-          // [DEBUG] 在方向变化前先触发 Obx 重建 → 保证闪屏必现
-          _setFullScreen(true);
           hideSystemBar();
           await changeOrientation(
             isVertical: isVertical,
@@ -1423,8 +1421,6 @@ class PlPlayerController with BlockConfigMixin {
         }
       } else {
         if (PlatformUtils.isMobile) {
-          // [DEBUG] 在方向恢复前先触发 Obx 重建 → 保证闪屏必现
-          _setFullScreen(false);
           if (!removeSafeArea) {
             showSystemBar();
           }
@@ -1437,7 +1433,7 @@ class PlPlayerController with BlockConfigMixin {
         }
       }
     } finally {
-      // _setFullScreen 已移到上面，finally 里不再重复调用
+      _setFullScreen(status);
       // 递增计数器，强制后台路由重建 → 使滚动偏移 bug 变为必现
       fullscreenTxCount.value++;
       _fsProcessing = false;

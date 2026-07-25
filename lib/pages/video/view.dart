@@ -1228,6 +1228,8 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
               plPlayerController?.videoController == null
           ? const SizedBox.shrink()
           : PLVideoPlayer(
+              // [DEBUG] key 随全屏状态变化 → 强制重建播放器 → Surface 在旋转期间必然断开
+              key: ValueKey('pl_video_player_${plPlayerController!.isFullScreen.value}'),
               maxWidth: width,
               maxHeight: height,
               plPlayerController: plPlayerController!,
