@@ -28,15 +28,16 @@ class PlDanmakuController {
   final Map<int, List<DanmakuElem>> _dmSegMap = HashMap();
   // 已请求的段落标记
   late final Set<int> _requestedSeg = HashSet();
-  // 记录被多个不同用户(midHash)发送过的弹幕文本，用于合并弹幕时区分计数
-  final Set<String> _multiUserTexts = HashSet<String>();
+  // 记录被多个不同用户(midHash)发送过的弹幕 dmid，用于合并弹幕时区分计数。
+  // 以 dmid 为 key 而非弹幕文本，可避免跨分段(不同 dmid)的多用户误判
+  final Set<int> _multiUserDmids = HashSet<int>();
 
   static const int segmentLength = 60 * 6 * 1000;
 
   void dispose() {
     _dmSegMap.clear();
     _requestedSeg.clear();
-    _multiUserTexts.clear();
+    _multiUserDmids.clear();
   }
 
   static int calcSegment(int progress) {
@@ -84,9 +85,9 @@ class PlDanmakuController {
             uniques[element.content] = element..count = 1;
           } else {
             elem.count++;
-            // 若同一文本来自不同用户(midHash不同)，标记为多用户重复
+            // 若同一文本来自不同用户(midHash不同)，标记该合并组(以第一条的dmid为准)为多用户
             if (elem.midHash != element.midHash) {
-              _multiUserTexts.add(element.content);
+              _multiUserDmids.add(elem.id.toInt());
             }
             continue;
           }
@@ -115,8 +116,8 @@ class PlDanmakuController {
     return _dmSegMap[progress ~/ 100];
   }
 
-  /// 该弹幕文本是否由多个不同用户发送过
-  bool isMultiUserDanmaku(String content) => _multiUserTexts.contains(content);
+  /// 该弹幕(dmid)是否由多个不同用户发送过
+  bool isMultiUserDanmaku(int dmid) => _multiUserDmids.contains(dmid);
 
   bool _fileDmLoaded = false;
 
