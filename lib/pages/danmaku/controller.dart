@@ -33,6 +33,8 @@ class PlDanmakuController {
   final Set<int> _multiUserDmids = HashSet<int>();
 
   static const int segmentLength = 60 * 6 * 1000;
+  // 合并弹幕的时间窗口：相同内容仅在窗口内合并，避免跨时间段误合并
+  static const int mergeWindow = 15 * 1000;
 
   void dispose() {
     _dmSegMap.clear();
@@ -69,7 +71,8 @@ class PlDanmakuController {
 
   void handleDanmaku(List<DanmakuElem> elems) {
     if (elems.isEmpty) return;
-    final uniques = HashMap<String, DanmakuElem>();
+    // 按时间窗口分组：窗口 → 文本 → 首条弹幕
+    final windowed = HashMap<int, HashMap<String, DanmakuElem>>();
 
     final filters = _plPlayerController.filters;
     final shouldFilter = filters.count != 0;
@@ -80,12 +83,14 @@ class PlDanmakuController {
 
       if (!element.isSelf) {
         if (_mergeDanmaku) {
+          final window = element.progress ~/ mergeWindow;
+          final uniques = windowed.putIfAbsent(window, HashMap.new);
           final elem = uniques[element.content];
           if (elem == null) {
             uniques[element.content] = element..count = 1;
           } else {
             elem.count++;
-            // 若同一文本来自不同用户(midHash不同)，标记该合并组(以第一条的dmid为准)为多用户
+            // 若同一窗口内同一文本来自不同用户(midHash不同)，标记该合并组为多用户
             if (elem.midHash != element.midHash) {
               _multiUserDmids.add(elem.id.toInt());
             }
