@@ -143,7 +143,9 @@ class _PlDanmakuState extends State<PlDanmaku> {
               isColorful:
                   playerController.showVipDanmaku &&
                   e.colorful == DmColorfulType.VipGradualColor,
-              count: e.count > 1 ? e.count : null,
+              count: e.count > 1 && _plDanmakuController.isMultiUserDanmaku(e.content)
+                  ? e.count
+                  : null,
               selfSend: e.isSelf,
               extra: VideoDanmaku(
                 id: e.id.toInt(),
