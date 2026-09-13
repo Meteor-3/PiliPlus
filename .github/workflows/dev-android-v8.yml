@@ -43,13 +43,13 @@ jobs:
         run: lib/scripts/build.ps1 android
 
       - name: Flutter Build Dev Apk (arm64-v8a only)
-        run: flutter build apk --release --target-platform android-arm64 --android-project-arg dev=1 --no-pub
+        run: flutter build apk --release --split-per-abi --target-platform android-arm64 --android-project-arg dev=1 --no-pub
 
       - name: Rename
         shell: bash
         run: |
-          mv build/app/outputs/flutter-apk/app-release.apk "PiliPlus_android_${{ env.version }}_arm64-v8a.apk"
-          ls -lh PiliPlus_android_*_arm64-v8a.apk
+          mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk "PiliPlus_android_${{ env.version }}_arm64-v8a.apk"
+          ls -lh build/app/outputs/flutter-apk/; ls -lh PiliPlus_android_*_arm64-v8a.apk
 
       - name: 上传
         uses: actions/upload-artifact@v7
