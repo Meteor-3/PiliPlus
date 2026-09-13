@@ -972,14 +972,15 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
     if (plPlayerController.seekToPos case final seekToPos?) {
       plPlayerController
         ..position.value = seekToPos.inSeconds
-        ..seekTo(seekToPos, isSeek: false)
-        ..seekToPos = null;
+        ..seekTo(seekToPos, isSeek: false);
+      plPlayerController.onSeekEnd();
+      plPlayerController.seekToPos = null;
     } else {
       plPlayerController.position.value =
           plPlayerController.videoPlayerController?.state.position.inSeconds ??
           0;
+      plPlayerController.onSeekEnd();
     }
-    plPlayerController.onSeekEnd();
   }
 
   void _onPanUpdate(ScaleUpdateDetails details) {
