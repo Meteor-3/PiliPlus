@@ -48,7 +48,7 @@ jobs:
       - name: Rename
         shell: bash
         run: |
-          mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk "PiliPlus_android_${{ env.version }}_arm64-v8a.apk"
+          mv build/app/outputs/flutter-apk/app-release.apk "PiliPlus_android_${{ env.version }}_arm64-v8a.apk"
           ls -lh PiliPlus_android_*_arm64-v8a.apk
 
       - name: 上传
