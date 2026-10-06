@@ -291,6 +291,9 @@ class _LiveRoomPageState extends State<LiveRoomPage>
                   ),
           );
         }
+        if (_liveRoomController.isOffline.value) {
+          return const _OfflinePlaceholder();
+        }
         return const SizedBox.shrink();
       },
     );
@@ -947,6 +950,20 @@ class _LiveRoomPageState extends State<LiveRoomPage>
           return Colors.transparent;
         }
       });
+}
+
+class _OfflinePlaceholder extends StatelessWidget {
+  const _OfflinePlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text(
+        '当前主播未开播',
+        style: TextStyle(fontSize: 14, color: Colors.white70),
+      ),
+    );
+  }
 }
 
 class _BorderIndicator extends LeafRenderObjectWidget {

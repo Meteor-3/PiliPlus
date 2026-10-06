@@ -65,6 +65,9 @@ class LiveRoomController extends GetxController {
   );
 
   final isLoaded = false.obs;
+
+  /// 未开播 / 已下播（无直播流，仅弹幕可用）
+  final isOffline = false.obs;
   final roomInfoH5 = Rxn<RoomInfoH5Data>();
 
   final liveTime = Rxn<int>();
@@ -239,18 +242,22 @@ class LiveRoomController extends GetxController {
       onlyAudio: plPlayerController.onlyPlayAudio.value,
     );
     if (res case Success(:final response)) {
+      ruid = response.uid;
+      if (response.roomId case final roomId?) {
+        this.roomId = roomId;
+      }
       if (response.liveStatus != 1) {
-        _showDialog('当前直播间未开播');
+        // 未开播 / 轮播：拿不到直播流，但仍初始化弹幕与聊天，支持查看/发送弹幕
+        isPortrait.value = response.isPortrait ?? false;
+        isOffline.value = true;
+        isLoaded.value = false;
+        startLiveMsg();
         return;
       }
       final playurl = response.playurlInfo?.playurl;
       if (playurl == null) {
         _showDialog('无法获取播放地址');
         return;
-      }
-      ruid = response.uid;
-      if (response.roomId case final roomId?) {
-        this.roomId = roomId;
       }
       liveTime.value = response.liveTime;
       startLiveTimer();
@@ -267,6 +274,7 @@ class LiveRoomController extends GetxController {
         if (!isLoaded.value && Accounts.heartbeat.isLogin) _fetchBlockRules(),
       ]);
       isLoaded.value = true;
+      isOffline.value = false;
     } else {
       _showDialog(res.toString());
     }
