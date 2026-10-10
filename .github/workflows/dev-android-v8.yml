@@ -43,7 +43,7 @@ jobs:
         run: lib/scripts/build.ps1 android
 
       - name: Flutter Build Dev Apk (arm64-v8a only)
-        run: flutter build apk --release --target-platform android-arm64 --android-project-arg dev=1 --no-pub
+        run: flutter build apk --release --split-per-abi --target-platform android-arm64 --android-project-arg dev=1 --no-pub
 
       - name: Rename
         shell: bash
@@ -54,6 +54,7 @@ jobs:
       - name: 上传
         uses: actions/upload-artifact@v7
         with:
+          archive: false
           name: Android_arm64-v8a_dev
           path: PiliPlus_android_*_arm64-v8a.apk
           if-no-files-found: error
